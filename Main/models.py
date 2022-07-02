@@ -23,7 +23,7 @@ class ProjectForm(models.Model):
     lockup_time=models.CharField("LockUp Time",max_length=200)
     project_to_launch=models.CharField("LockUp Time",max_length=200)
     project_launch_platform=models.URLField()
-    video=models.FileField(upload_to="")
+    video=models.FileField(upload_to="",blank=True)
     
 
     def __str__(self):
