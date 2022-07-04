@@ -4,7 +4,7 @@ from .serializers import *
 from rest_framework import viewsets,filters,generics,permissions,status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers
+
 from rest_framework.parsers import MultiPartParser,FormParser,FileUploadParser
 import json
 # Create your views here.
@@ -23,10 +23,12 @@ class ProjectFormApiView(APIView):
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
     
-    # def get(self,request,format=None):
-    #     data = serializers.serialize('json',ProjectForm.objects.filter())
-    #     return Response(data)
-        
+class ProjectFormListApiView(generics.ListAPIView):
+    serializer_class=ProjectFormSerializer
+    permission_classes=(permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return ProjectForm.objects.filter()
 
 class ProjectFormDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ProjectFormSerializer
