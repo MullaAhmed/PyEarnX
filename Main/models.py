@@ -3,6 +3,13 @@ from datetime import date
 from django.utils.timezone import datetime
 
 # Create your models here.
+class UserProfile(models.Model):
+    wallet_address = models.CharField("Wallet Address",max_length=1000,unique=True)
+    display_name = models.CharField("Name",max_length=100)
+    watch_history=models.JSONField("Watch History")
+
+    def __str__(self):
+        return (self.wallet_address)
 
 class ProjectForm(models.Model):
     wallet_address = models.CharField("Wallet Address",max_length=1000)
@@ -23,8 +30,19 @@ class ProjectForm(models.Model):
     lockup_time=models.CharField("LockUp Time",max_length=200)
     project_to_launch=models.CharField("LockUp Time",max_length=200)
     project_launch_platform=models.URLField()
-    video=models.FileField(upload_to="",blank=True)
-    
 
     def __str__(self):
-        return (self.date)
+        return (self.project_name)
+
+
+class Video(models.Model):
+    video_name =  models.CharField("Video Name",max_length=200,unique=True)
+    display_video_name=  models.CharField("Video Name",max_length=200)
+    project_name = models.CharField("Project Name",max_length=200)
+    likes=models.IntegerField("No. of Likes")
+    views=models.IntegerField("No. of Views")
+    votes=models.IntegerField("No. of Votes")
+    video=models.FileField(upload_to="",blank=True)
+
+    def __str__(self):
+        return (self.video_name)

@@ -1,6 +1,16 @@
 from rest_framework import serializers,fields
 from .models import *
 
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=UserProfile
+        fields=('id',
+                'wallet_address',
+                'watch_history')
+
+
 class ProjectFormSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -24,6 +34,24 @@ class ProjectFormSerializer(serializers.ModelSerializer):
             'lockup_time',
             'project_to_launch',
             'project_launch_platform',
+            
+                )
+
+class VideoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Video
+        fields=('id',
+        'display_video_name',
+            'video_name',
+            'project_name',
+            'likes',
+            'views',
+            'votes',
             'video',
                 )
+
+
+
+
 
