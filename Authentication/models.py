@@ -94,7 +94,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     @property
     def token(self):
         token=jwt.encode(
-            {'username':self.username,'email':self.email},
+            {'username':self.username,'wallet_address':self.wallet_address},
             settings.SECRET_KEY,
             algorithm='HS256')
         

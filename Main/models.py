@@ -4,7 +4,7 @@ from django.utils.timezone import datetime
 
 # Create your models here.
 class UserProfile(models.Model):
-    wallet_address = models.CharField("Wallet Address",max_length=1000,unique=True)
+    wallet_address = models.CharField("Wallet Address",max_length=1000,unique=True,primary_key=True)
     display_name = models.CharField("Name",max_length=100)
     watch_history=models.JSONField("Watch History")
 
@@ -12,8 +12,8 @@ class UserProfile(models.Model):
         return (self.wallet_address)
 
 class ProjectForm(models.Model):
-    wallet_address = models.CharField("Wallet Address",max_length=1000)
-    project_name = models.CharField("Project Name",max_length=200,unique=True)
+    wallet_address =  models.ForeignKey(to=UserProfile,on_delete=models.CASCADE)
+    project_name = models.CharField("Project Name",max_length=200,unique=True,primary_key=True)
     description=models.TextField("Description")
     project_category = models.CharField("Project Category",max_length=200)
     token_name = models.CharField("Token Name",max_length=200)
@@ -36,9 +36,9 @@ class ProjectForm(models.Model):
 
 
 class Video(models.Model):
-    video_name =  models.CharField("Video Name",max_length=200,unique=True)
+    video_name =  models.CharField("Video Name",max_length=200,unique=True,primary_key=True)
     display_video_name=  models.CharField("Video Name",max_length=200)
-    project_name = models.CharField("Project Name",max_length=200)
+    project_name = models.ForeignKey(to=ProjectForm,on_delete=models.CASCADE)
     likes=models.IntegerField("No. of Likes")
     views=models.IntegerField("No. of Views")
     votes=models.IntegerField("No. of Votes")

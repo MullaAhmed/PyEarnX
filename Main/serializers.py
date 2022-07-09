@@ -6,7 +6,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=UserProfile
-        fields=('id',
+        fields=('display_name',
                 'wallet_address',
                 'watch_history')
 
@@ -15,7 +15,7 @@ class ProjectFormSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=ProjectForm
-        fields=('id',
+        fields=(
             'wallet_address', 
             'project_name',
             'description',
@@ -41,7 +41,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Video
-        fields=('id',
+        fields=(
         'display_video_name',
             'video_name',
             'project_name',
