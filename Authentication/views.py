@@ -22,6 +22,7 @@ class RegisterAPIView(GenericAPIView):
     serializer_class=RegisterSerializer
 
     def post(self,request):
+        print(request.data)
         serializer=self.serializer_class(data=request.data)
 
         if serializer.is_valid():
@@ -35,7 +36,7 @@ class LoginAPIView(GenericAPIView):
 
     def post(self,request):
         username=request.data.get('username',None)
-        password=request.data.get('password',None)
+        password="Pass@123"
         user=authenticate(username=username,password=password)
 
         if user:
