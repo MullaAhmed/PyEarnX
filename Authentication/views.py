@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView,RetrieveUpdateDestroyAPIView
 from .serializers import *
 from rest_framework import response,status,permissions
 from django.contrib.auth import authenticate
@@ -47,4 +47,5 @@ class LoginAPIView(GenericAPIView):
         else:
             return response.Response({'message':'Invalid credentials try again'},status=status.HTTP_401_UNAUTHORIZED)
 
-            
+
+      
