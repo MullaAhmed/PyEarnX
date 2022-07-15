@@ -7,6 +7,8 @@ class UserProfile(models.Model):
     wallet_address = models.CharField("Wallet Address",max_length=1000,unique=True,primary_key=True)
     display_name = models.CharField("Name",max_length=100)
     watch_history=models.JSONField("Watch History")
+    like_history=models.JSONField("Like History")
+    vote_history=models.JSONField("Vote History")
 
     def __str__(self):
         return (self.wallet_address)

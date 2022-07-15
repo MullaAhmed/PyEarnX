@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
 from .serializers import *
@@ -104,15 +105,25 @@ class VideoDetailApiView(generics.RetrieveUpdateDestroyAPIView):
         uid = self.kwargs.get(self.lookup_field)
         return Video.objects.filter(video_name=uid)
 
+
+
 class VideoLikeApiView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=VideoSerializer
     permission_classes=(permissions.IsAuthenticated,)
     lookup_field=('video_name')
     def get_queryset(self):
+        
         uid = self.kwargs.get(self.lookup_field)
         data= Video.objects.filter(video_name=uid)
         likes=list(data.values('likes'))[0]['likes']
         data.update(likes=likes+1)
+
+        username=self.request.user
+        user=UserProfile.objects.filter(wallet_address=username)
+        
+        like_history=list(user.values('like_history'))[0]['like_history']
+        like_history.append(str(uid))
+        user.update(like_history=like_history)
         return(data)
 
 class VideoDisLikeApiView(generics.RetrieveUpdateDestroyAPIView):
@@ -124,6 +135,13 @@ class VideoDisLikeApiView(generics.RetrieveUpdateDestroyAPIView):
         data= Video.objects.filter(video_name=uid)
         likes=list(data.values('likes'))[0]['likes']
         data.update(likes=likes-1)
+
+        username=self.request.user
+        user=UserProfile.objects.filter(wallet_address=username)
+        like_history=list(user.values('like_history'))[0]['like_history']
+        like_history.remove(str(uid))
+        user.update(like_history=like_history)
+
         return(data)
 
 
@@ -136,7 +154,14 @@ class VideoVoteApiView(generics.RetrieveUpdateDestroyAPIView):
         data= Video.objects.filter(video_name=uid)
         votes=list(data.values('votes'))[0]['votes']
         data.update(votes=votes+1)
+
+        username=self.request.user
+        user=UserProfile.objects.filter(wallet_address=username)
+        vote_history=list(user.values('vote_history'))[0]['vote_history']
+        vote_history.append(str(uid))
+        user.update(vote_history=vote_history)
         return(data)
+
 
 class VideoViewsApiView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=VideoSerializer
@@ -147,4 +172,44 @@ class VideoViewsApiView(generics.RetrieveUpdateDestroyAPIView):
         data= Video.objects.filter(video_name=uid)
         views=list(data.values('views'))[0]['views']
         data.update(views=views+1)
+
+
+        username=self.request.user
+        user=UserProfile.objects.filter(wallet_address=username)
+        watch_history=list(user.values('watch_history'))[0]['watch_history']
+        watch_history.append(str(uid))
+        user.update(watch_history=watch_history)
         return(data)
+
+
+class VideoCheckApiView(APIView):
+    serializer_class=VideoSerializer
+    permission_classes=(permissions.IsAuthenticated,)
+    lookup_field=('video_name')
+
+    def get(self,request,video_name,format=None):
+        uid = self.kwargs.get(self.lookup_field)
+        data= Video.objects.filter(video_name=uid)
+      
+        result={}
+        username=self.request.user
+     
+        user=UserProfile.objects.filter(wallet_address=username)
+        watch_history=list(user.values('watch_history'))[0]['watch_history']
+        if str(uid) in watch_history:
+            result['watch_histroy']=(True)
+        else:
+             result['watch_histroy']=(False)
+        vote_history=list(user.values('vote_history'))[0]['vote_history']
+        if str(uid) in vote_history:
+             result['vote_histroy']=(True)
+        else:
+             result['vote_histroy']=(False)
+        like_history=list(user.values('like_history'))[0]['like_history']
+        if str(uid) in like_history:
+             result['like_histroy']=(True)
+        else:
+             result['like_histroy']=(False)
+        
+        print(result)
+        return Response(result,status=status.HTTP_200_OK)

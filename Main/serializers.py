@@ -8,7 +8,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model=UserProfile
         fields=('display_name',
                 'wallet_address',
-                'watch_history')
+                'watch_history',
+                'like_history',
+                'vote_history')
 
 
 class ProjectFormSerializer(serializers.ModelSerializer):

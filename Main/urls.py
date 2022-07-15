@@ -19,8 +19,9 @@ urlpatterns = [
 
     path("video/like/<slug:video_name>/",VideoLikeApiView.as_view()),
     path("video/dislike/<slug:video_name>/",VideoDisLikeApiView.as_view()),
-
     path("video/vote/<slug:video_name>/",VideoVoteApiView.as_view()),
-
     path("video/views/<slug:video_name>/",VideoViewsApiView.as_view()),
+    
+    path("video/check/<slug:video_name>/",VideoCheckApiView.as_view()),
+
     ]
