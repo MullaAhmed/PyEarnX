@@ -19,9 +19,9 @@ class JWTAuthentication(BasicAuthentication):
         try:
             payload=jwt.decode(token,settings.SECRET_KEY,algorithms="HS256")
             
-            username= payload['username']
+            wallet_address= payload['wallet_address']
 
-            user=User.objects.get(username=username)
+            user=User.objects.get(wallet_address=wallet_address)
 
             return(user,token)
 

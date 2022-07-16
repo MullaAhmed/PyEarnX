@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import date
 from django.utils.timezone import datetime
+from Authentication.models import User
 
 # Create your models here.
 class UserProfile(models.Model):
@@ -14,7 +15,7 @@ class UserProfile(models.Model):
         return (self.wallet_address)
 
 class ProjectForm(models.Model):
-    wallet_address =  models.ForeignKey(to=UserProfile,on_delete=models.CASCADE)
+    wallet_address =  models.ForeignKey(to=User,on_delete=models.CASCADE)
     project_name = models.CharField("Project Name",max_length=200,unique=True,primary_key=True)
     description=models.TextField("Description")
     project_category = models.CharField("Project Category",max_length=200)

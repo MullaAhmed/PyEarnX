@@ -12,28 +12,28 @@ from datetime import datetime,timedelta
 
 class MyUserManager(UserManager):
     
-    def _create_user(self, username, password, **extra_fields):
+    def _create_user(self, wallet_address, password, **extra_fields):
         """
-        Create and save a user with the given username,  and password.
+        Create and save a user with the given wallet_address,  and password.
         """
         
-        if not username:
-            raise ValueError("The given username must be set")
+        if not wallet_address:
+            raise ValueError("The given wallet_address must be set")
 
      
         GlobalUserModel = apps.get_model(
             self.model._meta.app_label, self.model._meta.object_name
         )
-        username = GlobalUserModel.normalize_username(username)
-        user = self.model(username=username, **extra_fields)
+        wallet_address = GlobalUserModel.normalize_username(wallet_address)
+        user = self.model(wallet_address=wallet_address, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, username,  password="Pass@123", **extra_fields):
+    def create_user(self, wallet_address,  password="Pass@123", **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
-        return self._create_user(username,  password, **extra_fields)
+        return self._create_user(wallet_address,  password, **extra_fields)
 
     def create_superuser(self, username,  password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
@@ -50,8 +50,8 @@ class MyUserManager(UserManager):
 class User(AbstractBaseUser,PermissionsMixin):
     
     username_validator = UnicodeUsernameValidator()
-    username = models.CharField(
-        _("username"),
+    wallet_address = models.CharField(
+        _("wallet_address"),
         max_length=150,
         unique=True,
         help_text=_(
@@ -59,8 +59,9 @@ class User(AbstractBaseUser,PermissionsMixin):
         ),
         validators=[username_validator],
         error_messages={
-            "unique": _("A user with that username already exists."),
+            "unique": _("A user with that wallet_address already exists."),
         },
+        primary_key=True
     )
    
     is_staff = models.BooleanField(
@@ -74,13 +75,13 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     objects = MyUserManager()
 
-    USERNAME_FIELD = "username"
+    USERNAME_FIELD = "wallet_address"
     
 
     @property
     def token(self):
         token=jwt.encode(
-            {'username':self.username},
+            {'wallet_address':self.wallet_address},
             settings.SECRET_KEY,
             algorithm='HS256')
         
