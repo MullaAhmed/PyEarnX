@@ -42,7 +42,6 @@ class UserProfileDetailApiView(generics.RetrieveUpdateDestroyAPIView):
 
 class ProjectFormApiView(APIView):
     permission_classes=[permissions.IsAuthenticated]
-    parser_classes=[MultiPartParser,FormParser,FileUploadParser]
 
     def post(self,request,format=None):
         serializer= ProjectFormSerializer(data=request.data)
