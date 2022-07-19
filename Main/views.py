@@ -42,6 +42,7 @@ class UserProfileDetailApiView(generics.RetrieveUpdateDestroyAPIView):
 
 class ProjectFormApiView(APIView):
     permission_classes=[permissions.IsAuthenticated]
+    parser_classes=[MultiPartParser,FormParser,FileUploadParser]
 
     def post(self,request,format=None):
         serializer= ProjectFormSerializer(data=request.data)
@@ -94,6 +95,15 @@ class VideoListApiView(generics.ListAPIView):
         uid = self.kwargs.get(self.lookup_field)
         
         return Video.objects.filter(project_name=uid)
+
+
+class VideoListAllApiView(generics.ListAPIView):
+    serializer_class=VideoSerializer
+    permission_classes=(permissions.IsAuthenticated,)
+    
+    
+    def get_queryset(self):
+        return Video.objects.filter()
 
 
 class VideoDetailApiView(generics.RetrieveUpdateDestroyAPIView):
@@ -192,8 +202,10 @@ class VideoCheckApiView(APIView):
       
         result={}
         username=self.request.user
+        print(username)
      
         user=UserProfile.objects.filter(wallet_address=username)
+        print(user)
         watch_history=list(user.values('watch_history'))[0]['watch_history']
         if str(uid) in watch_history:
             result['watch_histroy']=(True)
