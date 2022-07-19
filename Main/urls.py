@@ -15,6 +15,7 @@ urlpatterns = [
 
     path("video/",VideoApiView.as_view()),
     path("listvideos/<slug:project_name>/",VideoListApiView.as_view()),
+    path("listallvideos/",VideoListAllApiView.as_view()),
     path("video/<slug:video_name>/",VideoDetailApiView.as_view()),
 
     path("video/like/<slug:video_name>/",VideoLikeApiView.as_view()),
