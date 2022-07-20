@@ -54,7 +54,3 @@ class VideoSerializer(serializers.ModelSerializer):
             'video_thumbnail',
                 )
 
-
-
-
-

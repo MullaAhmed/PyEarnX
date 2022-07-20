@@ -14,6 +14,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return (self.wallet_address)
 
+
 class ProjectForm(models.Model):
     wallet_address =  models.ForeignKey(to=User,on_delete=models.CASCADE)
     project_name = models.CharField("Project Name",max_length=200,unique=True,primary_key=True)

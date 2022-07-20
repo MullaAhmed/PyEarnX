@@ -106,13 +106,17 @@ class VideoListAllApiView(generics.ListAPIView):
         return Video.objects.filter()
 
 
-class VideoDetailApiView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class=VideoSerializer
+class VideoDetailApiView(APIView):
     permission_classes=(permissions.IsAuthenticated,)
     lookup_field=('video_name')
-    def get_queryset(self):
+    def get(self, request, format=None,*args, **kwargs):
         uid = self.kwargs.get(self.lookup_field)
-        return Video.objects.filter(video_name=uid)
+        data=Video.objects.filter(video_name=uid)
+        project_data=ProjectForm.objects.filter(project_name=(data)[0].project_name)
+        data=dict(data.values()[0])
+        data['description']=(project_data[0].description)
+        print(data)
+        return Response(data)
 
 
 
@@ -202,10 +206,9 @@ class VideoCheckApiView(APIView):
       
         result={}
         username=self.request.user
-        print(username)
      
         user=UserProfile.objects.filter(wallet_address=username)
-        print(user)
+
         watch_history=list(user.values('watch_history'))[0]['watch_history']
         if str(uid) in watch_history:
             result['watch_histroy']=(True)
