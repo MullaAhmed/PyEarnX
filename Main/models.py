@@ -45,7 +45,9 @@ class Video(models.Model):
     likes=models.IntegerField("No. of Likes")
     views=models.IntegerField("No. of Views")
     votes=models.IntegerField("No. of Votes")
-    video=models.FileField(upload_to="",blank=True)
+    video=models.FileField(upload_to="video",blank=True)
+    video_thumbnail=models.FileField(upload_to="thumbnail",blank=True)
+
 
     def __str__(self):
         return (self.video_name)

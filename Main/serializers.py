@@ -51,6 +51,7 @@ class VideoSerializer(serializers.ModelSerializer):
             'views',
             'votes',
             'video',
+            'video_thumbnail',
                 )
 
 
