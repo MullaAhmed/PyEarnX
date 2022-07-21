@@ -106,20 +106,27 @@ class VideoListAllApiView(generics.ListAPIView):
         return Video.objects.filter()
 
 
-class VideoDetailApiView(APIView):
+# class VideoDetailApiView(APIView):
+#     permission_classes=(permissions.IsAuthenticated,)
+#     lookup_field=('video_name')
+#     def get(self, request, format=None,*args, **kwargs):
+#         uid = self.kwargs.get(self.lookup_field)
+#         data=Video.objects.filter(video_name=uid)
+#         project_data=ProjectForm.objects.filter(project_name=(data)[0].project_name)
+#         data=dict(data.values()[0])
+#         data['description']=(project_data[0].description)
+#         host_url="https://ieee-pdeu-test.herokuapp.com/media/"
+#         data['video']=host_url+data['video']
+#         data['video_thumbnail']=host_url+data['video_thumbnail']
+#         print(data)
+#         return Response(data)
+class VideoDetailApiView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=VideoSerializer
     permission_classes=(permissions.IsAuthenticated,)
     lookup_field=('video_name')
-    def get(self, request, format=None,*args, **kwargs):
+    def get_queryset(self):
         uid = self.kwargs.get(self.lookup_field)
-        data=Video.objects.filter(video_name=uid)
-        project_data=ProjectForm.objects.filter(project_name=(data)[0].project_name)
-        data=dict(data.values()[0])
-        data['description']=(project_data[0].description)
-        host_url="https://ieee-pdeu-test.herokuapp.com/media/"
-        data['video']=host_url+data['video']
-        data['video_thumbnail']=host_url+data['video_thumbnail']
-        print(data)
-        return Response(data)
+        return Video.objects.filter(video_name=uid)
 
 
 
