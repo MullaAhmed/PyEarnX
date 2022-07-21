@@ -115,6 +115,9 @@ class VideoDetailApiView(APIView):
         project_data=ProjectForm.objects.filter(project_name=(data)[0].project_name)
         data=dict(data.values()[0])
         data['description']=(project_data[0].description)
+        host_url="https://ieee-pdeu.herokuapp.com/media/"
+        data['video']=host_url+data['video']
+        data['video_thumbnail']=host_url+data['video_thumbnail']
         print(data)
         return Response(data)
 
