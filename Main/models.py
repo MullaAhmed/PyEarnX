@@ -10,6 +10,9 @@ class UserProfile(models.Model):
     watch_history=models.JSONField("Watch History")
     like_history=models.JSONField("Like History")
     vote_history=models.JSONField("Vote History")
+    battery=models.IntegerField("Battery")
+    package=models.CharField("Package Type",max_length=100)
+    reward=models.IntegerField("Reward")
 
     def __str__(self):
         return (self.wallet_address)

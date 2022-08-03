@@ -21,7 +21,6 @@ class UserProfileApiView(APIView):
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
 
-
 class UserProfileListApiView(generics.ListAPIView):
     serializer_class=UserProfileSerializer
     permission_classes=(permissions.IsAuthenticated,)
@@ -39,6 +38,7 @@ class UserProfileDetailApiView(generics.RetrieveUpdateDestroyAPIView):
         uid = self.kwargs.get(self.lookup_field)
         return UserProfile.objects.filter(wallet_address=uid)
 
+        
 
 class ProjectFormApiView(APIView):
     permission_classes=[permissions.IsAuthenticated]
@@ -71,6 +71,7 @@ class ProjectFormDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         uid = self.kwargs.get(self.lookup_field)
         return ProjectForm.objects.filter(project_name=uid)
+
 
 
 class VideoApiView(APIView):
@@ -106,20 +107,7 @@ class VideoListAllApiView(generics.ListAPIView):
         return Video.objects.filter()
 
 
-# class VideoDetailApiView(APIView):
-#     permission_classes=(permissions.IsAuthenticated,)
-#     lookup_field=('video_name')
-#     def get(self, request, format=None,*args, **kwargs):
-#         uid = self.kwargs.get(self.lookup_field)
-#         data=Video.objects.filter(video_name=uid)
-#         project_data=ProjectForm.objects.filter(project_name=(data)[0].project_name)
-#         data=dict(data.values()[0])
-#         data['description']=(project_data[0].description)
-#         host_url="https://ieee-pdeu-test.herokuapp.com/media/"
-#         data['video']=host_url+data['video']
-#         data['video_thumbnail']=host_url+data['video_thumbnail']
-#         print(data)
-#         return Response(data)
+
 class VideoDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=VideoSerializer
     permission_classes=(permissions.IsAuthenticated,)
@@ -201,7 +189,12 @@ class VideoViewsApiView(generics.RetrieveUpdateDestroyAPIView):
         user=UserProfile.objects.filter(wallet_address=username)
         watch_history=list(user.values('watch_history'))[0]['watch_history']
         watch_history.append(str(uid))
-        user.update(watch_history=watch_history)
+        
+        battery=list(user.values('battery'))[0]['battery']
+        reward=list(user.values('reward'))[0]['reward']
+        user.update(battery=battery-10,reward=reward+1,watch_history=watch_history)
+        # user.update()
+        
         return(data)
 
 
@@ -235,5 +228,32 @@ class VideoCheckApiView(APIView):
         else:
              result['like_histroy']=(False)
         
-        print(result)
+     
         return Response(result,status=status.HTTP_200_OK)
+
+class attempt(generics.ListAPIView):
+    serializer_class=UserProfileSerializer
+    permission_classes=(permissions.IsAuthenticated,)
+   
+    def get_queryset(self):
+        users=UserProfile.objects.filter()
+        for u in users:
+            user=UserProfile.objects.filter(wallet_address=u)
+            battery=list(user.values('battery'))[0]['battery']
+            package=list(user.values('package'))[0]['package']
+            print(package)
+            if package=='Platinium':
+                battery=(battery+70)
+                print(battery)
+            elif package=='Gold':
+                battery=(battery+60)%100
+            elif package=='Silver':
+                battery=(battery+50)%100
+
+            if battery>100:
+                    battery=100
+            print(battery)
+            user.update(battery=battery)
+        
+        return(users)
+

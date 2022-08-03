@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'rest_framework',
     'corsheaders',
     'Authentication',
     'Main',
+    'django_crontab',
     
 
 ]
@@ -157,4 +159,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
         os.path.join(BASE_DIR, ''),
     )
+
+CRONJOBS = [
+    ('0 0 * * *', 'Main.cron.reset_battery')
+]
 # in INSTALLED_APPS add'rest_framework','Authentication', 

@@ -10,7 +10,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
                 'wallet_address',
                 'watch_history',
                 'like_history',
-                'vote_history')
+                'vote_history',
+                'battery',    
+                'package',
+                'reward')
+
 
 
 class ProjectFormSerializer(serializers.ModelSerializer):

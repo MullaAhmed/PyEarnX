@@ -25,4 +25,6 @@ urlpatterns = [
     
     path("video/check/<slug:video_name>/",VideoCheckApiView.as_view()),
 
+    path("attempt/",attempt.as_view()),
+
     ]
