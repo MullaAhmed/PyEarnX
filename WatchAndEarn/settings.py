@@ -164,3 +164,4 @@ CRONJOBS = [
     ('0 0 * * *', 'Main.cron.reset_battery')
 ]
 # in INSTALLED_APPS add'rest_framework','Authentication', 
+# Cron Set
