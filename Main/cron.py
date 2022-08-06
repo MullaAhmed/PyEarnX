@@ -8,7 +8,7 @@ def reset_battery():
             battery=list(user.values('battery'))[0]['battery']
             package=list(user.values('package'))[0]['package']
             print(package)
-            if package=='Platinium':
+            if package=='Diamond':
                 battery=(battery+70)
                 print(battery)
             elif package=='Gold':
