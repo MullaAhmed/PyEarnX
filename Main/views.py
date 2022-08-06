@@ -192,7 +192,8 @@ class VideoViewsApiView(generics.RetrieveUpdateDestroyAPIView):
         
         battery=list(user.values('battery'))[0]['battery']
         reward=list(user.values('reward'))[0]['reward']
-        user.update(battery=battery-10,reward=reward+1,watch_history=watch_history)
+        if battery>=10:
+            user.update(battery=battery-10,reward=reward+1,watch_history=watch_history)
         # user.update()
         
         return(data)
