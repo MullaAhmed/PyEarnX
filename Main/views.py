@@ -21,6 +21,7 @@ class UserProfileApiView(APIView):
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
 
+
 class UserProfileListApiView(generics.ListAPIView):
     serializer_class=UserProfileSerializer
     permission_classes=(permissions.IsAuthenticated,)
@@ -243,7 +244,7 @@ class attempt(generics.ListAPIView):
             battery=list(user.values('battery'))[0]['battery']
             package=list(user.values('package'))[0]['package']
             print(package)
-            if package=='Platinium':
+            if package=='Diamond':
                 battery=(battery+70)
                 print(battery)
             elif package=='Gold':
