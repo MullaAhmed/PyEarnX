@@ -189,13 +189,15 @@ class VideoViewsApiView(generics.RetrieveUpdateDestroyAPIView):
         username=self.request.user
         user=UserProfile.objects.filter(wallet_address=username)
         watch_history=list(user.values('watch_history'))[0]['watch_history']
-        watch_history.append(str(uid))
-        
-        battery=list(user.values('battery'))[0]['battery']
-        reward=list(user.values('reward'))[0]['reward']
-        if battery>=10:
-            user.update(battery=battery-10,reward=reward+1,watch_history=watch_history)
-        # user.update()
+
+        if str(uid) not in watch_history:
+            watch_history.append(str(uid))
+            
+            battery=list(user.values('battery'))[0]['battery']
+            reward=list(user.values('reward'))[0]['reward']
+            if battery>=10:
+                user.update(battery=battery-10,reward=reward+1,watch_history=watch_history)
+            # user.update()
         
         return(data)
 
