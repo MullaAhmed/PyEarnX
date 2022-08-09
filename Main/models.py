@@ -51,6 +51,7 @@ class Video(models.Model):
     votes=models.IntegerField("No. of Votes")
     video=models.FileField(upload_to="video",blank=True)
     video_thumbnail=models.FileField(upload_to="thumbnail",blank=True)
+    project_details=models.JSONField("Project Details",default=dict())
 
 
     def __str__(self):

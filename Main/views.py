@@ -1,3 +1,5 @@
+from traceback import print_tb
+from unittest import result
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
@@ -117,6 +119,19 @@ class VideoDetailApiView(generics.RetrieveUpdateDestroyAPIView):
         uid = self.kwargs.get(self.lookup_field)
         return Video.objects.filter(video_name=uid)
 
+
+
+class VideoandProjectDetailApiView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=VideoSerializer
+    permission_classes=(permissions.IsAuthenticated,)
+    lookup_field=('video_name')
+    def get_queryset(self):
+        uid = self.kwargs.get(self.lookup_field)
+        video= Video.objects.filter(video_name=uid)
+        project_name=list(video.values('project_name'))[0]['project_name']
+        project=ProjectForm.objects.filter(project_name=project_name)
+        video.update(project_details=dict(project.values()[0]))
+        return video
 
 
 class VideoLikeApiView(generics.RetrieveUpdateDestroyAPIView):
